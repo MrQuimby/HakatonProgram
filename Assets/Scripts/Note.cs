@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,20 +7,28 @@ public class Note : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _lable;
     [SerializeField] private TextMeshProUGUI _taskText;
+    [SerializeField] private TextMeshProUGUI _scoreUI;
+    
     private int _dificult;
-    [SerializeField] private TextMeshProUGUI _score;
-
     private bool _isFilled = false;
+    private bool _isDone = false;
+    private int _score;
 
     private Toggle[] toggles = new Toggle[5];
 
     public bool IsFilled => _isFilled;
+    public TextMeshProUGUI ScoreUI => _scoreUI;
+    public int Score => _score;
+
+    public bool IsDone => _isDone;
 
     private void Awake()
     {
+        _score = 0;
         _lable = _lable.GetComponent<TextMeshProUGUI>();
         _taskText = _taskText.GetComponent<TextMeshProUGUI>();
-        _score = _score.GetComponent<TextMeshProUGUI>();//
+        _scoreUI = _scoreUI.GetComponent<TextMeshProUGUI>();
+
         _dificult = 1;
         toggles = GetComponentsInChildren<Toggle>();
         
@@ -34,6 +43,12 @@ public class Note : MonoBehaviour
             toggles[i].onValueChanged.AddListener((value) => OnToggleChanged(index, value));
         }
     }
+
+    public void StartDoingTask()
+    {
+
+    }
+
 
     void OnToggleChanged(int index, bool value)
     {
@@ -67,8 +82,24 @@ public class Note : MonoBehaviour
 
     public void CheckFilling()
     {
-        if (_lable.text == "" || _taskText.text == "" || _score.text == "") _isFilled = false;
+        if (_lable.text == "" || _taskText.text == "") _isFilled = false;
         else _isFilled = true;
     }
 
+    public void SetPoints(int value)
+    {
+        _score = value;
+        _scoreUI.text = $"Score: {value}";
+    }
+
+    public void SetNoteDone()
+    {
+        _isDone = true;
+    }
+
+
+    public void DeleteNote()
+    {
+        Destroy(this.gameObject);
+    }
 }
