@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class Note : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI _lable;
+    [SerializeField] private TextMeshProUGUI _context;
     [SerializeField] private TextMeshProUGUI _taskText;
     [SerializeField] private TextMeshProUGUI _scoreUI;
     
@@ -21,11 +21,14 @@ public class Note : MonoBehaviour
     public int Score => _score;
 
     public bool IsDone => _isDone;
+    public TextMeshProUGUI Context => _context;
+    public TextMeshProUGUI TaskText => _taskText;
+    public int Dificult => _dificult;
 
     private void Awake()
     {
         _score = 0;
-        _lable = _lable.GetComponent<TextMeshProUGUI>();
+        _context = _context.GetComponent<TextMeshProUGUI>();
         _taskText = _taskText.GetComponent<TextMeshProUGUI>();
         _scoreUI = _scoreUI.GetComponent<TextMeshProUGUI>();
 
@@ -82,7 +85,8 @@ public class Note : MonoBehaviour
 
     public void CheckFilling()
     {
-        if (_lable.text == "" || _taskText.text == "") _isFilled = false;
+        Debug.Log($"{_taskText.text}");
+        if (_context.text == "" || _taskText.text == "") _isFilled = false;
         else _isFilled = true;
     }
 

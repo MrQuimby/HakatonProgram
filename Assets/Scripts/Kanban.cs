@@ -6,12 +6,13 @@ using UnityEngine;
 
 public class Kanban : MonoBehaviour
 {
-
+    [SerializeField] private string apiKey = "Вставте свой API ключ";
+                                            
 
     [SerializeField] private TextMeshProUGUI _nameOnScreen;
     [SerializeField] private TextMeshProUGUI _pointsOnScreen;
     [SerializeField] private GameObject _loginPanel;
-    //[SerializeField] private GameObject _topPanel;
+
     [SerializeField] private TopMaker _topMaker;
 
     private string _name;
@@ -20,6 +21,8 @@ public class Kanban : MonoBehaviour
     private NoteMaker _noteMaker;
     private Executor _executor;
     private UISlot _emptySlot;
+
+    private Judge _judge;
 
     private List<Note> _notes;
 
@@ -95,23 +98,16 @@ public class Kanban : MonoBehaviour
 
     }
 
-    public void TaskIsDone(Note note)
+    public async void TaskIsDone(Note note)
     {
 
+        _judge = new Judge(apiKey);
+        int a = await _judge.GetScoreAsync(note.Context.text, note.Dificult, note.TaskText.text);
 
-        //_executor.AddPoints(10); функция добавляет очки пользователю
+        _executor.AddPoints(a); // функция добавляет очки пользователю
         SaveList();             // Функция сохраняет данные о баллах пользователя
-        ShowNameAndPoints();    // Обновляет данные о баллах на экране
+        ShowNameAndPoints();    // Обновляет данные о баллах на экран
 
-        Debug.Log("TaskIsDone");
-        /*
-        int a, b;
-        Int32.TryParse(_pointsOnScreen.text, out a); 
-        Int32.TryParse(note.ScoreUI.text, out b);
-        _executor.AddPoints(b);//
-        _pointsOnScreen.text = Convert.ToString(_executor.Score);
-        Debug.Log($"{_executor.Score}");
-        Debug.Log($"{b}");*/
     }
 
     public void SaveList()
