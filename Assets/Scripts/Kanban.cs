@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Kanban : MonoBehaviour
 {
-    [SerializeField] private string apiKey = "Вставте свой API ключ";
+    [SerializeField] private string apiKey = "Вставьте сюда ваш ключ OpenAI";
                                             
 
     [SerializeField] private TextMeshProUGUI _nameOnScreen;
@@ -103,6 +103,7 @@ public class Kanban : MonoBehaviour
 
         _judge = new Judge(apiKey);
         int a = await _judge.GetScoreAsync(note.Context.text, note.Dificult, note.TaskText.text);
+        Debug.Log($"Судья вернул значение: {a}");
 
         _executor.AddPoints(a); // функция добавляет очки пользователю
         SaveList();             // Функция сохраняет данные о баллах пользователя
